@@ -1,12 +1,10 @@
 package config
 
-import "os"
-
 type Config struct {
 	Key string
 }
 
-func NewConfig() *Config {
+/*func NewConfig() *Config {
 	key := os.Getenv("KEY")
 	if key == "" {
 		panic("Не передан параметр key в переменные окружения")
@@ -14,4 +12,9 @@ func NewConfig() *Config {
 	return &Config{
 		Key: key,
 	}
+}
+*/
+
+func (c *Config) GetAPIKey() string {
+	return c.Key
 }
