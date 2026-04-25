@@ -18,6 +18,14 @@ type Bin struct {
 	Name      string
 }
 
+type Account struct {
+	Login     string    `json:"login"` //`json:"login" xml:"test"`
+	Password  string    `json:"password"`
+	Url       string    `json:"url"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
+
 type BinList = []Bin
 
 func WriteBinList(binList BinList) {

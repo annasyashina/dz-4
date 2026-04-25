@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	//"struct/list/api"
 	"struct/list/api"
 	"struct/list/config"
 )
