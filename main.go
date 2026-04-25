@@ -4,8 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	//"struct/list/api"
 	"struct/list/api"
-	"struct/list/config"
 )
 
 func main() {
@@ -20,20 +21,20 @@ func main() {
 	update := flag.Bool("update", false, "Update операция")
 	delete := flag.Bool("delete", false, "Delete операция")
 	get := flag.Bool("get", false, "Get операция")
-	list := flag.Bool("get", false, "Get операция")
+	list := flag.Bool("list", false, "List операция")
 
 	file := flag.String("file", "", "Имя файла")
 	name := flag.String("name", "", "Наименование")
 	id := flag.String("id", "", "Идентификатор")
 	flag.Parse()
-	fmt.Print(*file)
-	fmt.Print(*name)
-	fmt.Print(*create)
-	fmt.Print(*update)
+	//.Print(*file)
+	//fmt.Print(*name)
+	//fmt.Print(*create)
+	//fmt.Print(*update)
 
 	//binList := bins.BinList{}
-	conf := config.NewConfig()
-	api.ReadKey(*conf)
+	//conf := config.NewConfig()
+	//api.ReadKey(*conf)
 	//fmt.Println("Приложение для структуры")
 
 	switch {
