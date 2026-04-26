@@ -12,12 +12,19 @@ import (
 	"struct/list/storage"
 )
 
+type BinResponse struct {
+	Metadata struct {
+		ID string `json:"id"`
+	} `json:"metadata"`
+	Record interface{} `json:"record"`
+}
+
 func ReadKey(config config.Config) string {
 	return config.Key
 }
 
-func CreateBin(file string, name string) bins.BinList {
-	binList := bins.BinList{}
+func CreateBin(file string, name string) BinResponse {
+	binList := BinResponse{}
 	data, err := storage.ReadFile(file)
 	url := "https://api.jsonbin.io/v3/b"
 
@@ -32,11 +39,13 @@ func CreateBin(file string, name string) bins.BinList {
 
 	resp.Header.Set("Content-Type", "application/json")
 	resp.Header.Set("X-Master-Key", cfg.GetAPIKey())
+	client := &http.Client{}
+	response, err := client.Do(resp)
 	if err != nil {
 		return binList
 	}
-	defer resp.Body.Close()
-	data, err = io.ReadAll(resp.Body)
+	defer response.Body.Close()
+	data, err = io.ReadAll(response.Body)
 	if err != nil {
 		return binList
 	}
@@ -47,11 +56,11 @@ func CreateBin(file string, name string) bins.BinList {
 	return binList
 }
 
-func UpdateBin(file string, id string) bins.BinList {
-	binList := bins.BinList{}
+func UpdateBin(file string, id string) BinResponse {
+	binList := BinResponse{}
 	data, err := storage.ReadFile(file)
 
-	url := fmt.Sprintf("%s/bins/%s", "https://api.jsonbin.io/v3/", id)
+	url := fmt.Sprintf("%s/b/%s", "https://api.jsonbin.io/v3/", id)
 	resp, err := http.NewRequest("PUT", url, bytes.NewBuffer(data))
 	if err != nil {
 		return binList
@@ -60,11 +69,13 @@ func UpdateBin(file string, id string) bins.BinList {
 
 	resp.Header.Set("Content-Type", "application/json")
 	resp.Header.Set("X-Master-Key", cfg.GetAPIKey())
+	client := &http.Client{}
+	response, err := client.Do(resp)
 	if err != nil {
 		return binList
 	}
-	defer resp.Body.Close()
-	data, err = io.ReadAll(resp.Body)
+	defer response.Body.Close()
+	data, err = io.ReadAll(response.Body)
 	if err != nil {
 		return binList
 	}
@@ -78,7 +89,7 @@ func UpdateBin(file string, id string) bins.BinList {
 func DeleteBin(id string) {
 	//url := "https://api.jsonbin.io/v3/b/66602054ad19ca34f8747e9c"
 	binList := bins.BinList{}
-	url := fmt.Sprintf("%s/bins/%s", "https://api.jsonbin.io/v3/", id)
+	url := fmt.Sprintf("%s/b/%s", "https://api.jsonbin.io/v3/", id)
 	resp, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return
@@ -87,11 +98,13 @@ func DeleteBin(id string) {
 
 	resp.Header.Set("Content-Type", "application/json")
 	resp.Header.Set("X-Master-Key", cfg.GetAPIKey())
+	client := &http.Client{}
+	response, err := client.Do(resp)
 	if err != nil {
 		return
 	}
-	defer resp.Body.Close()
-	data, err := io.ReadAll(resp.Body)
+	defer response.Body.Close()
+	data, err := io.ReadAll(response.Body)
 	if err != nil {
 		return
 	}
@@ -103,7 +116,7 @@ func DeleteBin(id string) {
 
 func GetBin(id string) map[string]interface{} {
 
-	url := fmt.Sprintf("%s/bins/%s", "https://api.jsonbin.io/v3/", id)
+	url := fmt.Sprintf("%s/b/%s", "https://api.jsonbin.io/v3/", id)
 	resp, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil
@@ -112,13 +125,15 @@ func GetBin(id string) map[string]interface{} {
 
 	resp.Header.Set("Content-Type", "application/json")
 	resp.Header.Set("X-Master-Key", cfg.GetAPIKey())
+	client := &http.Client{}
+	response, err := client.Do(resp)
 	if err != nil {
 		return nil
 	}
-	defer resp.Body.Close()
+	defer response.Body.Close()
 
 	var result map[string]interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+	if err := json.NewDecoder(response.Body).Decode(&result); err != nil {
 		return nil
 	}
 

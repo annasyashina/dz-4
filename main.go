@@ -39,13 +39,13 @@ func main() {
 
 	switch {
 	case *create:
-		api.CreateBin(*file, *name)
+		fmt.Printf("%v", api.CreateBin(*file, *name))
 	case *update:
-		api.UpdateBin(*file, *id)
+		fmt.Printf("%v", api.UpdateBin(*file, *id))
 	case *list:
-		api.ListBin()
+		//api.ListBin()
 	case *get:
-		api.GetBin(*id)
+		fmt.Printf("%v", api.GetBin(*id))
 	case *delete:
 		api.DeleteBin(*id)
 	default:
