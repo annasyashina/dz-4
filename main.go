@@ -43,7 +43,7 @@ func main() {
 	case *update:
 		fmt.Printf("%v", api.UpdateBin(*file, *id))
 	case *list:
-		api.ListBin()
+		//api.ListBin()
 	case *get:
 		fmt.Printf("%v", api.GetBin(*id))
 	case *delete:
