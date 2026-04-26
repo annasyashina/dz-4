@@ -39,11 +39,13 @@ func CreateBin(file string, name string) BinResponse {
 
 	resp.Header.Set("Content-Type", "application/json")
 	resp.Header.Set("X-Master-Key", cfg.GetAPIKey())
+	client := &http.Client{}
+	response, err := client.Do(resp)
 	if err != nil {
 		return binList
 	}
-	defer resp.Body.Close()
-	data, err = io.ReadAll(resp.Body)
+	defer response.Body.Close()
+	data, err = io.ReadAll(response.Body)
 	if err != nil {
 		return binList
 	}
