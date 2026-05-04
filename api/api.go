@@ -86,13 +86,13 @@ func UpdateBin(file string, id string) BinResponse {
 	return binList
 }
 
-func DeleteBin(id string) {
+func DeleteBin(id string) error {
 	//url := "https://api.jsonbin.io/v3/b/66602054ad19ca34f8747e9c"
 	binList := bins.BinList{}
 	url := fmt.Sprintf("%s/b/%s", "https://api.jsonbin.io/v3/", id)
 	resp, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
-		return
+		return err
 	}
 	cfg := &config.Config{Key: os.Getenv("KEY")}
 
@@ -101,17 +101,18 @@ func DeleteBin(id string) {
 	client := &http.Client{}
 	response, err := client.Do(resp)
 	if err != nil {
-		return
+		return err
 	}
 	defer response.Body.Close()
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
-		return
+		return err
 	}
 	err = json.Unmarshal(data, &binList)
 	if err != nil {
-		return
+		return err
 	}
+	return err
 }
 
 func GetBin(id string) map[string]interface{} {
